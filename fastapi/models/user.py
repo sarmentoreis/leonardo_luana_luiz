@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 
 
-class Usuario(BaseModel):
+class User(BaseModel):
+    id: int
     nome: str
     email: str
     idade: int
