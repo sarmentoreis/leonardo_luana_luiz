@@ -7,13 +7,13 @@ app = FastAPI()
 @app.get("/")
 async def home() -> dict:
     return {
-        "message": "O Servidor está no AR!"
+        "message": "Hello World!"
     }
 
 @app.get("/health")
 async def health() -> dict:
     return {
-        "message": "Servidor OK!"
+        "message": "Servidor está no AR!"
     }
 
 app.include_router(user_router, prefix = "/user")
