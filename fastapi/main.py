@@ -5,7 +5,7 @@ from routes import auth_router, predict_router
 app = FastAPI()
 
 @app.get("/")
-async def home() -> dict:
+async def hello() -> dict:
     return {
         "message": "Hello World!"
     }
