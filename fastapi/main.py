@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
-from routes.user import user_router
+from routes import auth_router, predict_router
 
 app = FastAPI()
 
@@ -16,7 +16,8 @@ async def health() -> dict:
         "message": "Servidor está no AR!"
     }
 
-app.include_router(user_router, prefix = "/user")
+app.include_router(auth_router, prefix = "/auth")
+app.include_router(predict_router, prefix = "/predict")
 
 if __name__ == "__main__":
     print("Iniciando o Projeto Eventos-API...")
