@@ -10,6 +10,11 @@ class User(BaseModel):
         examples = [1]
     )
 
+    login: str  = Field(
+        description = "Login do usuário",
+        examples = ["usuario.1"]
+    )
+
     name: str  = Field(
         description = "Nome do usuário",
         examples = ["Usuário 1"]
@@ -37,6 +42,11 @@ class UserResponseDTO(BaseModel):
     id: int = Field(
         description = "Identificador único do usuário",
         examples = [1]
+    )
+
+    login: str  = Field(
+        description = "Login do usuário",
+        examples = ["usuario.1"]
     )
 
     name: str  = Field(
@@ -69,17 +79,15 @@ class UserRequestDTO(BaseModel):
     )
 
     @classmethod
-    def as_form( cls, name: str = Form(...),  email: EmailStr  = Form(...),  password: str = Form(...) ):
-        return cls(name = name, email = email, password = password )
-
-
+    def as_form( cls, login: str = Form(...),  name: str = Form(...), email: EmailStr  = Form(...),  password: str = Form(...) ):
+        return cls(login = login, name = name, email = email, password = password )
 
 class UserSignInRequestDTO(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    email: EmailStr  = Field(
-        description = "Email do usuário",
-        examples = ["email@email.com.br"]
+    login: str  = Field(
+        description = "Login do usuário",
+        examples = ["usuario.1"]
     )
 
     password: str  = Field(
@@ -88,5 +96,5 @@ class UserSignInRequestDTO(BaseModel):
     )
 
     @classmethod
-    def as_form( cls, email: EmailStr  = Form(...),  password: str = Form(...) ):
-        return cls( email = email, password = password )
+    def as_form( cls, login: str  = Form(...),  password: str = Form(...) ):
+        return cls( login = login, password = password )
