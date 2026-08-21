@@ -8,7 +8,7 @@ from fastapi.security import OAuth2PasswordBearer
 SECRET_KEY = "MinhaChaveSecretaJWT2026_ABC123!"
 TOKEN_DURATION_MINUTES = 30
 TOKEN_ALGORITHM = "HS256"
-TOKEN_URL = "/token"
+TOKEN_URL = "/auth/token"
 TOKEN_TYPE = "Bearer"
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=TOKEN_URL)
@@ -37,7 +37,7 @@ def validate_token(token: str = Depends(oauth2_scheme)):
     )
 
     try:
-        result = jwt.decode(payload = token, key = SECRET_KEY, algorithm = [TOKEN_ALGORITHM])
+        result = jwt.decode(jwt = token, key = SECRET_KEY, algorithms = [TOKEN_ALGORITHM])
 
         if result is None:
             raise error
