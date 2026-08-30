@@ -3,7 +3,7 @@ from fastapi import Form
 
 
 class User(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, extra='forbid')
 
     id: int = Field(
         description = "Identificador único do usuário",
@@ -37,7 +37,7 @@ class User(BaseModel):
 
 
 class UserResponseDTO(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, extra='forbid')
 
     id: int = Field(
         description = "Identificador único do usuário",
@@ -61,7 +61,12 @@ class UserResponseDTO(BaseModel):
 
 
 class UserRequestDTO(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, extra='forbid')
+
+    login: str  = Field(
+        description = "Login do usuário",
+        examples = ["usuario.1"]
+    )
 
     name: str  = Field(
         description = "Nome do usuário",
@@ -83,7 +88,7 @@ class UserRequestDTO(BaseModel):
         return cls(login = login, name = name, email = email, password = password )
 
 class UserSignInRequestDTO(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, extra='forbid')
 
     login: str  = Field(
         description = "Login do usuário",
