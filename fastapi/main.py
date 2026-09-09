@@ -1,8 +1,11 @@
 from fastapi import FastAPI
+from sqlmodel import SQLModel
 import uvicorn
 from routes import auth_router, predict_router
+from database import engine
 
 app = FastAPI()
+SQLModel.metadata.create_all(engine)
 
 @app.get("/")
 async def hello() -> dict:

@@ -1,36 +1,35 @@
-from pydantic import BaseModel, Field, ConfigDict, EmailStr
+import pydantic as pyd
+import sqlmodel as sql
 from fastapi import Form
 
 
-class Predict(BaseModel):
-    model_config = ConfigDict(from_attributes=True, extra='forbid')
+class Predict(sql.SQLModel, table = True):
+    __tablename__ = "predict"
 
-    id: int = Field(
+    id: int = sql.Field(
         description = "Identificador único da mensagem",
-        examples = [1]
+        primary_key = True
     )
 
-    text: str  = Field(
-        description = "Texto da mensagem",
-        examples = ["Quais as formas de pagamento?"]
+    text: str  = sql.Field(
+        description = "Texto da mensagem"
     )
 
-    intent: str  = Field(
-        description = "Intenção da mensagem",
-        examples = ["Dúvida"]
+    intent: str  = sql.Field(
+        description = "Intenção da mensagem"
     )
 
-    owner_id: int = Field(
+    owner_id: int = sql.Field(
         description = "Identificador único do usuário que mandou a mensagem",
-        examples = [1]
+        foreign_key="user.id"
     )
 
 
 
-class PredictRequestDTO(BaseModel):
-    model_config = ConfigDict(from_attributes=True, extra='forbid')
+class PredictRequestDTO(pyd.BaseModel):
+    model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
 
-    text: str  = Field(
+    text: str  = pyd.Field(
         description = "Texto da mensagem",
         examples = ["Quais as formas de pagamento?"]
     )
@@ -40,25 +39,25 @@ class PredictRequestDTO(BaseModel):
         return cls(text = text)
 
 
-class PredictResponseDTO(BaseModel):
-    model_config = ConfigDict(from_attributes=True, extra='forbid')
+class PredictResponseDTO(pyd.BaseModel):
+    model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
 
-    id: int = Field(
+    id: int = pyd.Field(
         description = "Identificador único da mensagem",
         examples = [1]
     )
 
-    text: str  = Field(
+    text: str  = pyd.Field(
         description = "Texto da mensagem",
         examples = ["Quais as formas de pagamento?"]
     )
 
-    intent: str  = Field(
+    intent: str  = pyd.Field(
         description = "Intenção da mensagem",
         examples = ["Dúvida"]
     )
 
-    owner_id: int = Field(
+    owner_id: int = pyd.Field(
         description = "Identificador único do usuário que mandou a mensagem",
         examples = [1]
     )

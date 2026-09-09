@@ -42,6 +42,18 @@ def validate_token(token: str = Depends(oauth2_scheme)):
         if result is None:
             raise error
 
+        expiration = result.get('exp')
+        if expiration is None :            
+            raise error
+
+        expiration = datetime.fromtimestamp(
+            expiration,
+            tz=timezone.utc
+        )
+
+        if expiration < datetime.now(timezone.utc):
+            raise error    
+        
         login = result.get('sub')
 
         if login is None:

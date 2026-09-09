@@ -1,101 +1,97 @@
-from pydantic import BaseModel, Field, ConfigDict, EmailStr
+import pydantic as pyd
+import sqlmodel as sql
 from fastapi import Form
 
 
-class User(BaseModel):
-    model_config = ConfigDict(from_attributes=True, extra='forbid')
+class User(sql.SQLModel, table = True):
+    __tablename__ = "user"
 
-    id: int = Field(
+    id: int = sql.Field(
+        description = "Identificador único do usuário",
+        primary_key = True
+    )
+
+    login: str  = sql.Field(
+        description = "Login do usuário"
+    )
+
+    name: str  = sql.Field(
+        description = "Nome do usuário"
+    )
+
+    email: str  = sql.Field(
+        description = "Email do usuário"
+    )
+
+    hash_password: str  = sql.Field(
+        description = "Hash da Senha do usuário"
+    )
+
+    audit_token: str  = sql.Field(
+            description = "Token de auditoria"
+    )
+
+
+class UserResponseDTO(pyd.BaseModel):
+    model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
+
+    id: int = pyd.Field(
         description = "Identificador único do usuário",
         examples = [1]
     )
 
-    login: str  = Field(
+    login: str  = pyd.Field(
         description = "Login do usuário",
         examples = ["usuario.1"]
     )
 
-    name: str  = Field(
+    name: str  = pyd.Field(
         description = "Nome do usuário",
         examples = ["Usuário 1"]
     )
 
-    email: EmailStr  = Field(
-        description = "Email do usuário",
-        examples = ["email@email.com.br"]
-    )
-
-    password: str  = Field(
-        description = "Senha do usuário",
-        examples = ["strong123Psw!"]
-    )
-
-    audit_token: str  = Field(
-            description = "Token de auditoria",
-            examples = ["550e8400-e29b-41d4-a716-446655440000"]
-    )
-
-
-class UserResponseDTO(BaseModel):
-    model_config = ConfigDict(from_attributes=True, extra='forbid')
-
-    id: int = Field(
-        description = "Identificador único do usuário",
-        examples = [1]
-    )
-
-    login: str  = Field(
-        description = "Login do usuário",
-        examples = ["usuario.1"]
-    )
-
-    name: str  = Field(
-        description = "Nome do usuário",
-        examples = ["Usuário 1"]
-    )
-
-    email: EmailStr  = Field(
+    email: pyd.EmailStr  = pyd.Field(
         description = "Email do usuário",
         examples = ["email@email.com.br"]
     )
 
 
-class UserRequestDTO(BaseModel):
-    model_config = ConfigDict(from_attributes=True, extra='forbid')
+class UserRequestDTO(pyd.BaseModel):
+    model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
 
-    login: str  = Field(
+    login: str  = pyd.Field(
         description = "Login do usuário",
         examples = ["usuario.1"]
     )
 
-    name: str  = Field(
+    name: str  = pyd.Field(
         description = "Nome do usuário",
         examples = ["Usuário 1"]
     )
 
-    email: EmailStr  = Field(
+    email: pyd.EmailStr  = pyd.Field(
         description = "Email do usuário",
         examples = ["email@email.com.br"]
     )
 
-    password: str  = Field(
+    password: str  = pyd.Field(
         description = "Senha do usuário",
         examples = ["strong123Psw!"]
     )
 
     @classmethod
-    def as_form( cls, login: str = Form(...),  name: str = Form(...), email: EmailStr  = Form(...),  password: str = Form(...) ):
+    def as_form( cls, login: str = Form(...),  name: str = Form(...), email: pyd.EmailStr  = Form(...),  password: str = Form(...) ):
         return cls(login = login, name = name, email = email, password = password )
 
-class UserSignInRequestDTO(BaseModel):
-    model_config = ConfigDict(from_attributes=True, extra='forbid')
+class UserSignInRequestDTO(pyd.BaseModel):
+    model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
 
-    login: str  = Field(
+    login: str  = pyd.Field(
         description = "Login do usuário",
         examples = ["usuario.1"]
     )
 
-    password: str  = Field(
+    password: str  = pyd.Field(
         description = "Senha do usuário",
         examples = ["strong123Psw!"]
     )
