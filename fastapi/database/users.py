@@ -30,6 +30,10 @@ def get_user_by_id(id: int, session: Session = Depends(get_session)) -> User | N
     return session.exec(statement).first()
 
 def create_user(dto: UserRequestDTO, session: Session = Depends(get_session)) -> User:
+    existing_user = get_user_by_login(dto.login)
+    if existing_user is not None:
+        return None
+
     user = User(login=dto.login, name=dto.name, email=dto.email, hash_password=sec.hash_password(dto.password))
 
     session.add(user)
@@ -43,6 +47,11 @@ def edit_user( id: int, dto: UserRequestDTO, session: Session = Depends(get_sess
 
     if user is None:
         return None
+
+    if user.login != dto.login:
+        existing_user = get_user_by_login(dto.login)
+        if existing_user is not None:
+            return None
 
     user.login = dto.login
     user.name = dto.name

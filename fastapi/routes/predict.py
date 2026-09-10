@@ -3,13 +3,13 @@ import security as sc
 import database.users as u
 import database.predict as p
 from typing import List
-from models import Predict, PredictRequestDTO, PredictResponseDTO
+from models import PredictRequestDTO, PredictResponseDTO
 
 predict_router = APIRouter(
     tags=['Predict']
 )
 
-@predict_router.post('/', response_model=PredictResponseDTO)
+@predict_router.post('/', status_code  = status.HTTP_201_CREATED, response_model=PredictResponseDTO)
 async def post_predict(body: PredictRequestDTO, token: str = Depends(sc.validate_token)) -> PredictResponseDTO:
     user = u.get_user_by_login(token)
     
@@ -58,7 +58,7 @@ async def delete_predict(id: int, token: str = Depends(sc.validate_token)) -> di
     prediction = p.get_predict_by_id(id)
 
     if prediction is None:
-        raise HTTPException( status_code= status.HTTP_404_NOT_FOUND, detail="Prediction não existe")
+        raise HTTPException( status_code= status.HTTP_404_NOT_FOUND, detail="Predict não existe")
 
     if prediction.owner_id != user.id:
         raise HTTPException( status_code= status.HTTP_403_FORBIDDEN, detail="Acesso restrito")
