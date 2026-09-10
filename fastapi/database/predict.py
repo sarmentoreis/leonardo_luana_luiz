@@ -1,5 +1,5 @@
 from fastapi import  Depends
-from models import Predict
+from models import Predict, PredictRequestDTO
 from sqlmodel import Session, select
 from database import get_session
 from typing import List
@@ -25,3 +25,23 @@ def get_all_predicts_by_intent(intent: str, session: Session = Depends(get_sessi
     )
     
     return session.exec(statement).fetchall()
+
+def create_predict(dto: PredictRequestDTO, owner_id: int, session: Session = Depends(get_session)) -> Predict:
+    predict = Predict(text=dto.text, intent="Cancelamento", owner_id=owner_id)
+
+    session.add(predict)
+    session.commit()
+    session.refresh(predict)
+
+    return predict
+
+def delete_predict(id: int, session: Session = Depends(get_session)) -> bool:
+    predict = get_predict_by_id(id, session)
+
+    if predict is None:
+        return False
+
+    session.delete(predict)
+    session.commit()
+
+    return True
