@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from sqlmodel import SQLModel
 import uvicorn
-from routes import auth_router, predict_router
+from routes import auth_router, predict_router, user_router
 from database import engine
 
 app = FastAPI()
@@ -20,6 +20,7 @@ async def health() -> dict:
     }
 
 app.include_router(auth_router, prefix = "/auth")
+app.include_router(user_router, prefix = "/user")
 app.include_router(predict_router, prefix = "/predict")
 
 if __name__ == "__main__":

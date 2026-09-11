@@ -2,7 +2,7 @@ import security as sec
 from fastapi import  Depends
 from models import User, UserRequestDTO
 from sqlmodel import Session, select
-from database import get_session
+from database.connection import get_session
 
 def auth_user(login: str, password: str, session: Session = Depends(get_session)) -> User | None:
     statement = select(User).where(

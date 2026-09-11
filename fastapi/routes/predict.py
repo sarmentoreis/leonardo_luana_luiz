@@ -20,7 +20,7 @@ async def post_predict(body: PredictRequestDTO, token: str = Depends(sc.validate
 
     return prediction
 
-@predict_router.get('/my-predictions', response_model = List[PredictResponseDTO])
+@predict_router.get('/', response_model = List[PredictResponseDTO])
 async def get_predictions(token: str = Depends(sc.validate_token)) ->  List[PredictResponseDTO]:
     user = p.get_user_by_login(token)
 
@@ -31,7 +31,7 @@ async def get_predictions(token: str = Depends(sc.validate_token)) ->  List[Pred
 
     return predictions
 
-@predict_router.get('/my-predictions/{id}', response_model = PredictResponseDTO)
+@predict_router.get('/{id}', response_model = PredictResponseDTO)
 async def get_predict_by_id(id: int, token: str = Depends(sc.validate_token)) ->  PredictResponseDTO:
     user = u.get_user_by_login(token)
 
@@ -48,7 +48,7 @@ async def get_predict_by_id(id: int, token: str = Depends(sc.validate_token)) ->
 
     return prediction
 
-@predict_router.delete('/my-predictions/{id}', response_model = dict)
+@predict_router.delete('/{id}', response_model = dict)
 async def delete_predict(id: int, token: str = Depends(sc.validate_token)) -> dict:
     user = u.get_user_by_login(token)
 

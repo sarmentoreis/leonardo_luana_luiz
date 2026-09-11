@@ -1,7 +1,7 @@
 from fastapi import  Depends
 from models import Predict, PredictRequestDTO
 from sqlmodel import Session, select
-from database import get_session
+from database.connection import get_session
 from typing import List
 
 def get_predict_by_id(id: int, session: Session = Depends(get_session)) -> Predict | None:
