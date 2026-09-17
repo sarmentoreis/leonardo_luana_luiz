@@ -27,10 +27,6 @@ class User(sql.SQLModel, table = True):
         description = "Hash da Senha do usuário"
     )
 
-    audit_token: str  = sql.Field(
-            description = "Token de auditoria"
-    )
-
 
 class UserResponseDTO(pyd.BaseModel):
     model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')

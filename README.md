@@ -23,7 +23,13 @@ Diretório onde se encontram os arquivos de modelos das entidades do banco de da
 Diretório onde se encontram os arquivos de rotas da aplicação, separados por entidade relacionadas.
 
 ### Diretório Security
-Diretório onde se encontram os métodos e configurações relacionadas com o JWT e OAuth2
+Diretório onde se encontram os métodos e configurações relacionadas com o JWT e OAuth2.
+
+### Diretório Scripts
+Diretório onde se encontra o script de dump inicial do database e dos dados iniciais.
+
+### Diretório Tests
+Diretório onde se encontra os scripts de testes.
 
 ### Arquivo Requirements.txt
 Lista das bibliotecas utilizadas.
@@ -37,4 +43,6 @@ Lista das bibliotecas utilizadas.
     - CMD: venv\Scripts\activate
     - Linux: source venv/bin/activate
 - Instale as dependências do projeto com: python -m pip install -r requirements.txt
-- Para executar o projeto de FastAPI é só necessário executar o arquivo main.py na raiz desse projeto, ele já conta com os comandos de inicialização do servidor para serem executados via código.
+- Para executar o projeto de FastAPI é só necessário executar o arquivo main.py na raiz desse projeto (pasta fastapi), ele já conta com os comandos de inicialização do servidor para serem executados via código.
+- Para executar o dump do banco de dados é necessário estar na raiz do projeto fastapi, e executar o comando: python -m scripts.dump_database
+- Para executar os testes é necessário estar na raiz do projeto fasapi, e executar o comando: python -m pytest -v

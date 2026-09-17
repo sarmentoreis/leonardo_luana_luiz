@@ -4,7 +4,7 @@ from models import User, UserRequestDTO
 from sqlmodel import Session, select
 from database.connection import get_session
 
-def auth_user(login: str, password: str, session: Session = Depends(get_session)) -> User | None:
+def auth_user(login: str, password: str, session: Session) -> User | None:
     statement = select(User).where(
         User.login == login
     )
@@ -15,21 +15,21 @@ def auth_user(login: str, password: str, session: Session = Depends(get_session)
     
     return user 
 
-def get_user_by_login(login: str, session: Session = Depends(get_session)) -> User | None:
+def get_user_by_login(login: str, session: Session) -> User | None:
     statement = select(User).where(
         User.login == login
     )
 
     return session.exec(statement).first()
 
-def get_user_by_id(id: int, session: Session = Depends(get_session)) -> User | None:
+def get_user_by_id(id: int, session: Session) -> User | None:
     statement = select(User).where(
         User.id == id
     )
     
     return session.exec(statement).first()
 
-def create_user(dto: UserRequestDTO, session: Session = Depends(get_session)) -> User:
+def create_user(dto: UserRequestDTO, session: Session) -> User:
     existing_user = get_user_by_login(dto.login)
     if existing_user is not None:
         return None
@@ -42,7 +42,7 @@ def create_user(dto: UserRequestDTO, session: Session = Depends(get_session)) ->
 
     return user
 
-def edit_user( id: int, dto: UserRequestDTO, session: Session = Depends(get_session)) -> User | None:
+def edit_user( id: int, dto: UserRequestDTO, session: Session) -> User | None:
     user = get_user_by_id(id, session)
 
     if user is None:
@@ -63,7 +63,7 @@ def edit_user( id: int, dto: UserRequestDTO, session: Session = Depends(get_sess
 
     return user
 
-def delete_user(id: int, session: Session = Depends(get_session)) -> bool:
+def delete_user(id: int, session: Session) -> bool:
     user = get_user_by_id(id, session)
 
     if user is None:
