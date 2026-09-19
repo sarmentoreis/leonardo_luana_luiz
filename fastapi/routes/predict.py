@@ -5,14 +5,14 @@ import database.predict as p
 import database.connection as c
 from sqlmodel import Session
 from typing import List
-from models import PredictRequestDTO, PredictResponseDTO
+from models import PredictRequestDTO, PredictCompactResponseDTO, PredictFullResponseDTO
 
 predict_router = APIRouter(
     tags=['Predict']
 )
 
-@predict_router.post('/', status_code  = status.HTTP_201_CREATED, response_model=PredictResponseDTO)
-async def post_predict(body: PredictRequestDTO, token: str = Depends(sc.validate_token), session: Session = Depends(c.get_session)) -> PredictResponseDTO:
+@predict_router.post('/', status_code  = status.HTTP_201_CREATED, response_model=PredictCompactResponseDTO)
+async def post_predict(body: PredictRequestDTO, token: str = Depends(sc.validate_token), session: Session = Depends(c.get_session)) -> PredictCompactResponseDTO:
     user = u.get_user_by_login(login=token, session=session)
     
     if user is None:
@@ -22,8 +22,8 @@ async def post_predict(body: PredictRequestDTO, token: str = Depends(sc.validate
 
     return prediction
 
-@predict_router.get('/', response_model = List[PredictResponseDTO])
-async def get_predictions(token: str = Depends(sc.validate_token), session: Session = Depends(c.get_session)) ->  List[PredictResponseDTO]:
+@predict_router.get('/', response_model = List[PredictCompactResponseDTO])
+async def get_predictions(token: str = Depends(sc.validate_token), session: Session = Depends(c.get_session)) ->  List[PredictCompactResponseDTO]:
     user = u.get_user_by_login(login=token, session=session)
 
     if user is None:
@@ -33,8 +33,8 @@ async def get_predictions(token: str = Depends(sc.validate_token), session: Sess
 
     return predictions
 
-@predict_router.get('/{id}', response_model = PredictResponseDTO)
-async def get_predict_by_id(id: int, token: str = Depends(sc.validate_token), session: Session = Depends(c.get_session)) ->  PredictResponseDTO:
+@predict_router.get('/{id}', response_model = PredictCompactResponseDTO)
+async def get_predict_by_id(id: int, token: str = Depends(sc.validate_token), session: Session = Depends(c.get_session)) ->  PredictCompactResponseDTO:
     user = u.get_user_by_login(login=token, session=session)
 
     if user is None:

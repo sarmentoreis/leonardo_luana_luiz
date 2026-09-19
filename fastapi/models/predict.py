@@ -39,7 +39,7 @@ class PredictRequestDTO(pyd.BaseModel):
         return cls(text = text)
 
 
-class PredictResponseDTO(pyd.BaseModel):
+class PredictFullResponseDTO(pyd.BaseModel):
     model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
 
     id: int = pyd.Field(
@@ -60,4 +60,17 @@ class PredictResponseDTO(pyd.BaseModel):
     owner_id: int = pyd.Field(
         description = "Identificador único do usuário que mandou a mensagem",
         examples = [1]
+    )
+
+class PredictCompactResponseDTO(pyd.BaseModel):
+    model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
+
+    text: str  = pyd.Field(
+        description = "Texto da mensagem",
+        examples = ["Quais as formas de pagamento?"]
+    )
+
+    intent: str  = pyd.Field(
+        description = "Intenção da mensagem",
+        examples = ["Dúvida"]
     )
