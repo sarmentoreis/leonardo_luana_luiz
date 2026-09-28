@@ -10,7 +10,7 @@ auth_router = APIRouter(
     tags=['Auth']
 )
 @auth_router.post('/signup', status_code  = status.HTTP_201_CREATED,  response_model=UserResponseDTO)
-@sc.limiter.limit("5/minute")
+@sc.limiter.limit("10/minute")
 async def signup(request: Request, body: UserRequestDTO, session: Session = Depends(c.get_session)) -> UserResponseDTO:
     user = u.create_user(dto=body, session=session)    
     if user is None:
@@ -19,7 +19,7 @@ async def signup(request: Request, body: UserRequestDTO, session: Session = Depe
     return user 
 
 @auth_router.post('/signin')
-@sc.limiter.limit("5/minute")
+@sc.limiter.limit("10/minute")
 async def signin(request: Request,dto: UserSignInRequestDTO, session: Session = Depends(c.get_session)) -> dict:
     user = u.auth_user(login = dto.login, password=dto.password, session=session)
     if user is None:
