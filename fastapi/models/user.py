@@ -29,7 +29,7 @@ class User(sql.SQLModel, table = True):
 
 
 class UserResponseDTO(pyd.BaseModel):
-    model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
+    model_config = pyd.ConfigDict(from_attributes=True, extra='ignore')
 
     id: int = pyd.Field(
         description = "Identificador único do usuário",

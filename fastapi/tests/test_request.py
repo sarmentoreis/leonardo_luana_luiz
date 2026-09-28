@@ -17,7 +17,6 @@ def create_token(session):
     token = sc.create_token(user)
     return token
 
-
 def test_access_without_token(): 
     response = client.get("/predict/1") 
     assert response.status_code == 401

@@ -40,7 +40,7 @@ class PredictRequestDTO(pyd.BaseModel):
 
 
 class PredictFullResponseDTO(pyd.BaseModel):
-    model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
+    model_config = pyd.ConfigDict(from_attributes=True, extra='ignore')
 
     id: int = pyd.Field(
         description = "Identificador único da mensagem",
@@ -63,7 +63,7 @@ class PredictFullResponseDTO(pyd.BaseModel):
     )
 
 class PredictCompactResponseDTO(pyd.BaseModel):
-    model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
+    model_config = pyd.ConfigDict(from_attributes=True, extra='ignore')
 
     text: str  = pyd.Field(
         description = "Texto da mensagem",
