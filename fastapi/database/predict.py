@@ -1,7 +1,11 @@
 from models import Predict, PredictRequestDTO
 from sqlmodel import Session, select
-from database.connection import get_session
 from typing import List
+
+def get_all(session: Session) -> List[Predict]:  
+    statement = select(Predict)
+    
+    return session.exec(statement).fetchall()
 
 def get_predict_by_id(id: int, session: Session) -> Predict | None:
     statement = select(Predict).where(

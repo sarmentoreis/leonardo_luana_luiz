@@ -27,6 +27,9 @@ class User(sql.SQLModel, table = True):
         description = "Hash da Senha do usuário"
     )
 
+    role: str  = sql.Field(
+        description = "Role do usuário"
+    )
 
 class UserResponseDTO(pyd.BaseModel):
     model_config = pyd.ConfigDict(from_attributes=True, extra='ignore')

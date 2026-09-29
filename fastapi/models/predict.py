@@ -25,7 +25,6 @@ class Predict(sql.SQLModel, table = True):
     )
 
 
-
 class PredictRequestDTO(pyd.BaseModel):
     model_config = pyd.ConfigDict(from_attributes=True, extra='forbid')
 
@@ -64,7 +63,7 @@ class PredictFullResponseDTO(pyd.BaseModel):
 
 class PredictCompactResponseDTO(pyd.BaseModel):
     model_config = pyd.ConfigDict(from_attributes=True, extra='ignore')
-
+    
     text: str  = pyd.Field(
         description = "Texto da mensagem",
         examples = ["Quais as formas de pagamento?"]

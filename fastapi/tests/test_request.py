@@ -13,7 +13,7 @@ def session():
 
 @pytest.fixture
 def create_token(session):
-    user = u.get_user_by_id(id=1, session=session)
+    user = u.get_user_by_id(id=3, session=session)
     token = sc.create_token(user)
     return token
 

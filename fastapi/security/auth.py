@@ -4,6 +4,8 @@ from datetime import datetime, timezone, timedelta
 from models import User
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
+from consts.roles_permissions import ROLE_PERMISSIONS
+from models.token_data import TokenData
 
 SECRET_KEY = "MinhaChaveSecretaJWT2026_ABC123!"
 TOKEN_DURATION_MINUTES = 30
@@ -15,9 +17,13 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl=TOKEN_URL)
 
 def create_token(user: User) -> str:
     expiracao = datetime.now(timezone.utc) + timedelta(minutes=30)
+    iat = datetime.now(timezone.utc)
     dados = {
-        "sub": user.login,
-        "exp": expiracao
+        "sub": str(user.id),
+        "exp": expiracao,
+        "iat": iat,
+        "permissions": ROLE_PERMISSIONS.get(user.role, []),
+        "role": user.role,
     }
     token = jwt.encode(payload = dados, key = SECRET_KEY, algorithm = TOKEN_ALGORITHM)
     return token
@@ -29,7 +35,7 @@ def create_token_return(user: User):
         "token_type": TOKEN_TYPE
     }
 
-def validate_token(token: str = Depends(oauth2_scheme)):
+def validate_token(token: str = Depends(oauth2_scheme)) -> TokenData:
     error = HTTPException(
         status_code=401,
         detail="Token inválido ou expirado",
@@ -53,13 +59,17 @@ def validate_token(token: str = Depends(oauth2_scheme)):
 
         if expiration < datetime.now(timezone.utc):
             raise error    
-        
-        login = result.get('sub')
 
-        if login is None:
+        entity_id = result.get('sub')
+        permissions = result.get('permissions')
+        role = result.get('role')
+
+        if entity_id is None:
             raise error
+
+        token_data = TokenData(entity_id = int(entity_id), permissions = permissions, role = role)
         
     except InvalidTokenError:
         raise error
 
-    return login
+    return token_data
