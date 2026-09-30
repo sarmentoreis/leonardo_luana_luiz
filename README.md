@@ -34,6 +34,8 @@ Diretório onde se encontra os scripts de testes.
 ### Arquivo Requirements.txt
 Lista das bibliotecas utilizadas.
 
+### Diretório Zap
+Diretório onde se encontra os relatórios do scan passivo com OWASP ZAP. Relatório da ferramenta e nosso relatório em markdown.
 
 ### Guia de utilização
 - Acesse a pasta desse repositório, e acesse a pasta do fastapi.
