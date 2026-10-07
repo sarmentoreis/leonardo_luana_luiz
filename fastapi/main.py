@@ -71,5 +71,5 @@ app.include_router(user_router, prefix = "/user")
 app.include_router(predict_router, prefix = "/predict")
 
 if __name__ == "__main__":
-    print("Iniciando o Projeto Eventos-API...")
+    print("Iniciando o Projeto de Bloco...")
     uvicorn.run("main:app", host="localhost", port=8080, reload=True)

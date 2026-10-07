@@ -31,4 +31,18 @@ def test_check_another_user_resource(create_token):
     response = client.get( "/predict/3", headers={ "Authorization": f"Bearer {create_token}" }) 
     assert response.status_code == 403
 
+def test_rate_limite_unauthorized_form(): 
+    for index in range(11):
+        response = client.post(f"/auth/token",data={"username": "teste","password": "teste"}) 
+        if index != 10:
+            assert response.status_code == 401
+        else:
+            assert response.status_code == 429
 
+def test_login_success(): 
+    response = client.post(f"/auth/signin",json={"login": "admin","password": "admin"}) 
+    assert response.status_code == 200
+
+def test_login_error(): 
+    response = client.post(f"/auth/signin",json={"login": "teste","password": "teste"}) 
+    assert response.status_code == 401

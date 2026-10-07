@@ -28,7 +28,7 @@ async def signin(request: Request,dto: UserSignInRequestDTO, session: Session = 
     return sc.create_token_return(user)
 
 @auth_router.post('/token')
-@sc.limiter.limit("5/minute")
+@sc.limiter.limit("10/minute")
 def token(request: Request, form_data: OAuth2PasswordRequestForm = Depends(OAuth2PasswordRequestForm), session: Session = Depends(c.get_session)) -> dict:
     user = u.auth_user(login = form_data.username, password=form_data.password, session=session)
     if user is None:
