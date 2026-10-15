@@ -10,6 +10,11 @@ from slowapi import _rate_limit_exceeded_handler
 import time
 from security import limiter
 from models import *
+import os
+
+# EXEMPLO 03 — Sub Resource Integrity Attribute Missing
+environment = os.getenv("APP_ENV", "development")
+is_development = environment.lower() == "development"
 
 origins = [
     "http://localhost",
@@ -21,8 +26,11 @@ origins = [
     "http://localhost:3000",
 ]
 
-
-app = FastAPI()
+app = FastAPI(
+    docs_url="/docs" if is_development else None,
+    redoc_url="/redoc" if is_development else None,
+    openapi_url="/openapi.json" if is_development else None
+)
 SQLModel.metadata.create_all(engine)
 
 app.add_middleware(
@@ -55,6 +63,9 @@ async def add_headers(request: Request, call_next):
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+
+    # Maldito Swagger
+    # EXEMPLO 02 — Content Security Policy (CSP) Header Not Set
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; "
         "script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; "
@@ -62,7 +73,7 @@ async def add_headers(request: Request, call_next):
         "img-src 'self' data: https://fastapi.tiangolo.com; "
         "font-src 'self' https://cdn.jsdelivr.net; "
         "connect-src 'self' https://cdn.jsdelivr.net;"
-    ) # Maldito Swagger
+    ) 
 
     return response
 

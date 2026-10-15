@@ -83,7 +83,7 @@ Caso um atacante obtenha controle desse serviço externo, ele poderia injetar co
 
 Caso o script externo tivesse sido utilizado diretamente no código da aplicação, deveríamos utilizar um atributo de validação da integridade do conteúdo desse script.
 
-Porém, como se trata de um arquivo utilizado pelo Swagger, não conseguimos alterar essas configurações.
+Porém, como se trata de um arquivo utilizado pelo Swagger, não conseguimos alterar essas configurações. No máximo que conseguimos seria desabilitar a utilização ou exposição do swagger de acordo com o ambiente de desenvolvimento.
 
 ### Validação
 
