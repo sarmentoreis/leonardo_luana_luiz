@@ -11,6 +11,7 @@ import time
 from security import limiter
 from models import *
 import os
+from pathlib import Path
 
 # EXEMPLO 03 — Sub Resource Integrity Attribute Missing
 environment = os.getenv("APP_ENV", "development")
@@ -46,7 +47,12 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 @app.get("/")
 async def hello() -> dict:
-    return RedirectResponse(url="/docs")
+    if is_development:
+        return RedirectResponse(url="/docs")
+
+    return {
+        "message": "Hello World"
+    }
 
 @app.get("/health")
 async def health() -> dict:
@@ -82,5 +88,9 @@ app.include_router(user_router, prefix = "/user")
 app.include_router(predict_router, prefix = "/predict")
 
 if __name__ == "__main__":
+    # EXEMPLO 01 — Credenciais de Autenticação Capturadas
+    BASE_DIR = Path(__file__).resolve().parent
+    CERT_FILE = BASE_DIR / "certs" / "cert.pem"
+    KEY_FILE = BASE_DIR / "certs" / "key.pem"
     print("Iniciando o Projeto de Bloco...")
-    uvicorn.run("main:app", host="localhost", port=8080, reload=True)
+    uvicorn.run("main:app", host="localhost", port=8080, reload=True, ssl_keyfile=str(KEY_FILE), ssl_certfile=str(CERT_FILE))

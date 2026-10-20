@@ -15,7 +15,15 @@ Possibilita que os atacantes tenham acesso aos dados trafegados na API sem que e
 
 ### Correção realizada
 
-A correção proposta seria implementar a utilização de HTTPS na API, para que as trocas de mensagens sejam criptografadas. Esse ajuste ainda não foi realizado.
+Foi adicionado certificados autoassinados na aplicação para utilizar https, e foi configurado o método run do uvicorn para utilizar esses certificados. Em ambientes de produção seria necessário utilizar certificados de certificadores confiáveis.
+
+``` python
+    BASE_DIR = Path(__file__).resolve().parent
+    CERT_FILE = BASE_DIR / "certs" / "cert.pem"
+    KEY_FILE = BASE_DIR / "certs" / "key.pem"
+    print("Iniciando o Projeto de Bloco...")
+    uvicorn.run("main:app", host="localhost", port=8080, reload=True, ssl_keyfile=str(KEY_FILE), ssl_certfile=str(CERT_FILE))
+```
 
 ### Validação
 
