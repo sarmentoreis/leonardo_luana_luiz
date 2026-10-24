@@ -17,7 +17,7 @@ Possibilita que os atacantes tenham acesso aos dados trafegados na API sem que e
 
 Foi adicionado certificados autoassinados na aplicação para utilizar https, e foi configurado o método run do uvicorn para utilizar esses certificados. Em ambientes de produção seria necessário utilizar certificados de certificadores confiáveis.
 
-``` python
+```python
     BASE_DIR = Path(__file__).resolve().parent
     CERT_FILE = BASE_DIR / "certs" / "cert.pem"
     KEY_FILE = BASE_DIR / "certs" / "key.pem"
@@ -64,6 +64,7 @@ response.headers["Content-Security-Policy"] = (
     "connect-src 'self' https://cdn.jsdelivr.net;"
 )
 ```
+
 ### Validação
 
 A validação seria realizada utilizando o scan passivo do OWASP ZAP novamente e verificando se os alertas referentes a essa vulnerabilidade desapareceram.
@@ -81,7 +82,7 @@ Não se aplica, pois a correção foi realizada.
 
 ### O que foi detectado
 
-O OWASP ZAP identificou que scripts externos estão sendo utilizados sem o atributo de integridade (*Subresource Integrity* — SRI).
+O OWASP ZAP identificou que scripts externos estão sendo utilizados sem o atributo de integridade (_Subresource Integrity_ — SRI).
 
 ### Por que é um problema
 
@@ -100,3 +101,7 @@ A validação seria realizada utilizando o scan passivo do OWASP ZAP novamente e
 ### Risco aceito, se não corrigido
 
 Aceitamos o risco, pois se trata de um script externo utilizado pelo Swagger e não temos acesso para alterar as configurações dessa importação.
+
+### Relatório atualizado
+
+Após as resoluções o último report gerado `2026-10-23-ZAP-Report-Env-Prod` não observamos mais os problemas detectados anteriormente pelo OWASP ZAP.

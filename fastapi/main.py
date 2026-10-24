@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 
 # EXEMPLO 03 — Sub Resource Integrity Attribute Missing
-environment = os.getenv("APP_ENV", "development")
+environment = os.getenv("APP_ENV", "development") # Alterar para Production
 is_development = environment.lower() == "development"
 
 origins = [
