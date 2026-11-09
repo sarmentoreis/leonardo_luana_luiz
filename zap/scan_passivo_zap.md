@@ -31,7 +31,7 @@ A validação seria realizada utilizando o scan passivo do OWASP ZAP novamente e
 
 ### Risco aceito, se não corrigido
 
-O ajuste ainda não foi realizado, pois estamos em etapa de desenvolvimento. A aplicação ainda não está pronta para homologação ou produção.
+Não se aplica, pois a correção foi realizada.
 
 ## EXEMPLO 02 — Content Security Policy (CSP) Header Not Set
 
@@ -100,7 +100,7 @@ A validação seria realizada utilizando o scan passivo do OWASP ZAP novamente e
 
 ### Risco aceito, se não corrigido
 
-Aceitamos o risco, pois se trata de um script externo utilizado pelo Swagger e não temos acesso para alterar as configurações dessa importação.
+Não se aplica, pois a correção foi realizada.
 
 ### Relatório atualizado
 
