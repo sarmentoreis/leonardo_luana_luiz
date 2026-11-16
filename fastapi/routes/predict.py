@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+import joblib
 import security as sc
 import database.users as u
 import database.predict as p
@@ -60,3 +61,26 @@ async def delete_predict(id: int, token: TokenData = Depends(sc.validate_token),
     prediction = p.delete_predict(id=id, session=session)
 
     return {"message": "Predict deletado com sucesso."}
+
+@predict_router.post('/classify', status_code  = status.HTTP_200_OK, response_model=PredictFullResponseDTO)
+async def post_classify(body: PredictRequestDTO, token: TokenData = Depends(sc.validate_token), session: Session = Depends(c.get_session)) -> PredictFullResponseDTO:
+    if not token.has_permission(perm.PREDICT_CREATE): 
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can't classify data.") 
+
+    texto = body.text.strip()
+    if not texto:
+            raise HTTPException(
+                status_code=422,
+                detail="A mensagem não pode estar vazia"
+            )
+
+    modelo = joblib.load("../joblib/melhor_classificador_intent.joblib")
+    vectorizer = joblib.load("../joblib/vectorizer.joblib")
+
+    X = vectorizer.transform([texto])
+    intent = modelo.predict(X)[0]
+    probability = modelo.predict_proba(X).max()
+
+    prediction = p.create_predict(dto=body, owner_id=token.entity_id, session=session, intent=intent, probability=probability)
+
+    return prediction

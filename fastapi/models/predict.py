@@ -19,6 +19,10 @@ class Predict(sql.SQLModel, table = True):
         description = "Intenção da mensagem"
     )
 
+    probability: float  = sql.Field(
+        description = "Probabilidade da mensagem"
+    )
+
     owner_id: int = sql.Field(
         description = "Identificador único do usuário que mandou a mensagem",
         foreign_key="user.id"
@@ -56,6 +60,11 @@ class PredictFullResponseDTO(pyd.BaseModel):
         examples = ["Dúvida"]
     )
 
+    probability: float  = pyd.Field(
+        description = "Probabilidade da mensagem",
+        examples = [0.98989898]
+    )
+
     owner_id: int = pyd.Field(
         description = "Identificador único do usuário que mandou a mensagem",
         examples = [1]
@@ -72,4 +81,9 @@ class PredictCompactResponseDTO(pyd.BaseModel):
     intent: str  = pyd.Field(
         description = "Intenção da mensagem",
         examples = ["Dúvida"]
+    )
+
+    probability: float  = pyd.Field(
+        description = "Probabilidade da mensagem",
+        examples = [0.98989898]
     )
