@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 import joblib
 import security as sc
 import database.users as u
@@ -8,6 +8,7 @@ from sqlmodel import Session
 from typing import List
 from models import PredictRequestDTO,  PredictFullResponseDTO, TokenData
 import consts.permissions as perm
+from pathlib import Path
 
 predict_router = APIRouter(
     tags=['Predict']
@@ -73,9 +74,14 @@ async def post_classify(body: PredictRequestDTO, token: TokenData = Depends(sc.v
                 status_code=422,
                 detail="A mensagem não pode estar vazia"
             )
-
-    modelo = joblib.load("../joblib/melhor_classificador_intent.joblib")
-    vectorizer = joblib.load("../joblib/vectorizer.joblib")
+            
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    JOBLIB_DIR = BASE_DIR / "joblib"
+    
+    MODEL_PATH = JOBLIB_DIR / "melhor_classificador_intent.joblib"
+    modelo = joblib.load(MODEL_PATH)
+    VECTOR_PATH = JOBLIB_DIR / "vectorizer.joblib"
+    vectorizer = joblib.load(VECTOR_PATH)
 
     X = vectorizer.transform([texto])
     intent = modelo.predict(X)[0]

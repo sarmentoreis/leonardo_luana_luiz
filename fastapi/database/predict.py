@@ -29,8 +29,8 @@ def get_all_predicts_by_intent(intent: str, session: Session) -> List[Predict]:
     
     return session.exec(statement).fetchall()
 
-def create_predict(dto: PredictRequestDTO, owner_id: int, session: Session, intent: str = "Cancelamento", proba: float = 0.9898989) -> Predict:
-    predict = Predict(text=dto.text, intent=intent, owner_id=owner_id, probability=proba)
+def create_predict(dto: PredictRequestDTO, owner_id: int, session: Session, intent: str = "Cancelamento", probability: float = 0.9898989) -> Predict:
+    predict = Predict(text=dto.text, intent=intent, owner_id=owner_id, probability=probability)
 
     session.add(predict)
     session.commit()
