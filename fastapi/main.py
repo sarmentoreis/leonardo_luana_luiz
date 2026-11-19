@@ -12,6 +12,9 @@ from security import limiter
 from models import *
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # EXEMPLO 03 — Sub Resource Integrity Attribute Missing
 environment = os.getenv("APP_ENV", "development") # Alterar para Production

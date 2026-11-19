@@ -21,6 +21,9 @@ class TokenData(pyd.BaseModel):
         examples =  ["participant"]
     )
 
+    token_jwt: str | None = pyd.Field(
+        description = "TOKEN JWT"
+    )
 
     def has_role(self, role: str) -> bool:
         if not role:

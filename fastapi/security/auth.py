@@ -67,7 +67,7 @@ def validate_token(token: str = Depends(oauth2_scheme)) -> TokenData:
         if entity_id is None:
             raise error
 
-        token_data = TokenData(entity_id = int(entity_id), permissions = permissions, role = role)
+        token_data = TokenData(entity_id = int(entity_id), permissions = permissions, role = role, token_jwt = token)
         
     except InvalidTokenError:
         raise error

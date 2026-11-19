@@ -9,6 +9,7 @@ from typing import List
 from models import PredictRequestDTO,  PredictFullResponseDTO, TokenData
 import consts.permissions as perm
 from pathlib import Path
+from agent import classificar_groq
 
 predict_router = APIRouter(
     tags=['Predict']
@@ -63,7 +64,7 @@ async def delete_predict(id: int, token: TokenData = Depends(sc.validate_token),
 
     return {"message": "Predict deletado com sucesso."}
 
-@predict_router.post('/classify', status_code  = status.HTTP_200_OK, response_model=PredictFullResponseDTO)
+@predict_router.post('/classify', status_code  = status.HTTP_201_CREATED, response_model=PredictFullResponseDTO)
 async def post_classify(body: PredictRequestDTO, token: TokenData = Depends(sc.validate_token), session: Session = Depends(c.get_session)) -> PredictFullResponseDTO:
     if not token.has_permission(perm.PREDICT_CREATE): 
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can't classify data.") 
@@ -88,5 +89,19 @@ async def post_classify(body: PredictRequestDTO, token: TokenData = Depends(sc.v
     probability = modelo.predict_proba(X).max()
 
     prediction = p.create_predict(dto=body, owner_id=token.entity_id, session=session, intent=intent, probability=probability)
-
     return prediction
+
+@predict_router.post('/classify_comllm', status_code  = status.HTTP_201_CREATED, response_model=PredictFullResponseDTO)
+async def post_classify(body: PredictRequestDTO, token: TokenData = Depends(sc.validate_token), session: Session = Depends(c.get_session)) -> PredictFullResponseDTO:
+    if not token.has_permission(perm.PREDICT_CREATE): 
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can't classify data.") 
+
+    texto = body.text.strip()
+    if not texto:
+            raise HTTPException(
+                status_code=422,
+                detail="A mensagem não pode estar vazia"
+            )
+
+    resposta = await classificar_groq(dto = body, token = token.token_jwt)
+    return resposta
