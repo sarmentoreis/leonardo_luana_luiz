@@ -1,4 +1,5 @@
 import jwt
+import os
 from jwt.exceptions import InvalidTokenError
 from datetime import datetime, timezone, timedelta
 from models import User
@@ -6,12 +7,15 @@ from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from consts.roles_permissions import ROLE_PERMISSIONS
 from models.token_data import TokenData
+from dotenv import load_dotenv
 
-SECRET_KEY = "MinhaChaveSecretaJWT2026_ABC123!"
-TOKEN_DURATION_MINUTES = 30
-TOKEN_ALGORITHM = "HS256"
-TOKEN_URL = "/auth/token"
-TOKEN_TYPE = "Bearer"
+load_dotenv()
+
+SECRET_KEY = os.environ["SECRET_KEY"]
+TOKEN_DURATION_MINUTES = os.environ["TOKEN_DURATION_MINUTES"]
+TOKEN_ALGORITHM = os.environ["TOKEN_ALGORITHM"]
+TOKEN_URL = os.environ["TOKEN_URL"]
+TOKEN_TYPE = os.environ["TOKEN_TYPE"]
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=TOKEN_URL)
 
